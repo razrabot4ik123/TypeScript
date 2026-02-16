@@ -1,24 +1,42 @@
 import { Page } from '../components/ui/Page';
 import { Card } from '../components/Card';
+import { ProductsApi } from '../api/products';
+import { ApiError } from '../api/error';
+import type { Product } from '../types/product';
 
 export class HomePage extends Page {
+  private products: Product[] = [];
+
   constructor() {
     super('div', 'home');
   }
 
-  private appendProducts(container: HTMLElement): void {
-    for (let i = 0; i < 3; i++) {
-      container.append(new Card().render());
+  private async getProducts() {
+    try {
+      const products = await ProductsApi.get();
+      console.log(products)
+      this.products = products;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        console.error(error.message);
+      }
     }
   }
 
-  protected createPage(): void {
+  private appendProducts(container: HTMLElement): void {
+    this.products.forEach((product: Product) => {
+      container.append(new Card(product).render());
+    });
+  }
+
+  protected async createPage(): Promise<void> {
     const container = this.element.querySelector('.container') as HTMLElement;
+    await this.getProducts();
     this.appendProducts(container);
   }
 
-  public render(): HTMLElement {
-    this.createPage();
+  public async render(): Promise<HTMLElement> {
+    await this.createPage();
     return this.element;
   }
 }

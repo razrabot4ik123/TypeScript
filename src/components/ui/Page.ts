@@ -11,7 +11,7 @@ export abstract class Page {
     this.element.append(container);
   }
 
-  protected abstract createPage(): void;
+  protected abstract createPage(): Promise<void>;
 
-  public abstract render(): HTMLElement;
+  public abstract render():  Promise<HTMLElement>;
 }

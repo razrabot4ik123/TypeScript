@@ -10,9 +10,9 @@ class App {
     this.root = document.querySelector('#app')!;
   }
 
-  init(): void {
+  async init(): Promise<void> {
     this.root.append(new Header().render());
-    this.root.append(new HomePage().render());
+    this.root.append(await new HomePage().render());
   }
 }
 
