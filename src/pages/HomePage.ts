@@ -1,5 +1,5 @@
-import { Card } from '../components/Card';
 import { Page } from '../components/ui/Page';
+import { Card } from '../components/Card';
 
 export class HomePage extends Page {
   constructor() {
